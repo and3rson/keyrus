@@ -23,6 +23,17 @@ Overlay::Overlay(QWidget *parent)
 
     this->hide();
     this->language = "us";
+
+    //
+    this->display = XOpenDisplay(":0");
+
+    //
+    this->kbdDescPtr = XkbAllocKeyboard();
+    if (kbdDescPtr == NULL) {
+        qFatal("Failed to get keyboard description.");
+    }
+
+    this->kbdDescPtr->dpy = display;
 }
 
 void Overlay::paintEvent(QPaintEvent *)
@@ -63,17 +74,6 @@ void Overlay::resizeEvent(QResizeEvent * /* event */)
 
 void Overlay::timeout()
 {
-    //
-    Display *display = XOpenDisplay(":0");
-
-    //
-    XkbDescPtr kbdDescPtr = XkbAllocKeyboard();
-    if (kbdDescPtr == NULL) {
-        qFatal("Failed to get keyboard description.");
-    }
-
-    kbdDescPtr->dpy = display;
-
     //
     XkbStateRec state;
     XkbGetState(display, XkbUseCoreKbd, &state);

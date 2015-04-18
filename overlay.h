@@ -31,6 +31,9 @@ public slots:
 private:
     QPoint dragPosition;
     QString language;
+
+    Display *display;
+    XkbDescPtr kbdDescPtr;
 };
 
 #endif
